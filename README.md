@@ -20,8 +20,23 @@ The extension does not create one OpenCart order per address.
 
 ## Build
 
-```bash
-php scripts/build-extension.php
+Prerequisites:
+
+- Git
+- PHP CLI available as `php`
+- OpenCart 4 admin access
+
+Clone the repository:
+
+```cmd
+git clone <repository-url> raai_multi_address
+cd raai_multi_address
+```
+
+Build the installable OpenCart package:
+
+```cmd
+php scripts\build-extension.php
 ```
 
 The package is written to:
@@ -30,18 +45,41 @@ The package is written to:
 build/raai_multi_address.ocmod.zip
 ```
 
+On WAMP, if `php` is not available in Command Prompt, run PHP directly from the WAMP PHP folder:
+
+```cmd
+C:\wamp64\bin\php\php8.2.0\php.exe scripts\build-extension.php
+```
+
+Adjust `php8.2.0` to the installed PHP folder on your machine.
+
 ## Tests
 
-```bash
-php tests/run.php
+```cmd
+php tests\run.php
 ```
 
 The test harness validates the Product X x3 split into Address A x1 and Address B x2, option-distinct cart rows, under/over allocation failures, shipping pricing modes, one-order persistence shape, and duplicate callback idempotence.
 
 ## Installation
 
-1. Upload `build/raai_multi_address.ocmod.zip` in Extensions > Installer.
-2. Install the extension.
-3. Go to Extensions > Extensions > Modules.
-4. Install and enable Multi-Address Shipping.
-5. Configure shipping pricing mode and limits.
+1. Build the zip locally with `php scripts\build-extension.php`.
+2. In OpenCart admin, go to Extensions > Installer.
+3. Upload `build/raai_multi_address.ocmod.zip`.
+4. Go to Extensions > Extensions.
+5. Select Modules from the extension type dropdown.
+6. Install and enable Multi-Address Shipping.
+7. Configure shipping pricing mode and limits.
+
+For updates to an existing local test store, uninstall the module first, then upload and install the newly built zip so OpenCart re-registers extension files and events.
+
+## Updating From Git
+
+From the cloned repository:
+
+```cmd
+git pull
+php scripts\build-extension.php
+```
+
+Then reinstall the newly built `build\raai_multi_address.ocmod.zip` through OpenCart admin.
