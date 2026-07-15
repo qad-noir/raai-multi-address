@@ -45,13 +45,19 @@ The package is written to:
 build/raai_multi_address.ocmod.zip
 ```
 
-On WAMP, if `php` is not available in Command Prompt, run PHP directly from the WAMP PHP folder:
+If `php` is not available in Command Prompt, run the build script with the full path to your local PHP executable:
+
+```cmd
+"C:\path\to\php.exe" scripts\build-extension.php
+```
+
+For example, a WAMP install might look like:
 
 ```cmd
 C:\wamp64\bin\php\php8.2.0\php.exe scripts\build-extension.php
 ```
 
-Adjust `php8.2.0` to the installed PHP folder on your machine.
+Adjust the path to match the PHP version and install location on your machine.
 
 ## Tests
 
