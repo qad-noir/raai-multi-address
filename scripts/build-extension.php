@@ -5,13 +5,12 @@ $root = dirname(__DIR__);
 $package = $root . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'raai_multi_address.ocmod.zip';
 $required = [
 	'install.json',
-	'README.md',
 	'admin/controller/module/multi_address.php',
 	'admin/model/raai_multi_address/install.php',
 	'catalog/model/checkout/multi_address.php',
 	'system/library/raai_multi_address/allocation.php'
 ];
-$package_roots = ['install.json', 'README.md', 'LICENSE', 'admin', 'catalog', 'system'];
+$package_roots = ['install.json', 'LICENSE', 'admin', 'catalog', 'system'];
 $prohibited = ['oc_store_project/', '.git/', '.env', 'tests/', 'docs/', 'scripts/', 'build/'];
 
 foreach ($required as $path) {
