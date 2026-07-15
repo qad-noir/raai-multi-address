@@ -29,7 +29,7 @@ Prerequisites:
 Clone the repository:
 
 ```cmd
-git clone <repository-url> raai_multi_address
+git clone https://github.com/qad-noir/raai-multi-address.git raai_multi_address
 cd raai_multi_address
 ```
 
