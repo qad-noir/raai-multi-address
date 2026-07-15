@@ -38,28 +38,6 @@ php tests/run.php
 
 The test harness validates the Product X x3 split into Address A x1 and Address B x2, option-distinct cart rows, under/over allocation failures, shipping pricing modes, one-order persistence shape, and duplicate callback idempotence.
 
-## Local Reference Store Deployment
-
-Dry run:
-
-```bash
-php scripts/deploy-to-reference-store.php --dry-run
-```
-
-Copy extension files into `oc_store_project/`:
-
-```bash
-php scripts/deploy-to-reference-store.php
-```
-
-Cleanup deployed extension files:
-
-```bash
-php scripts/cleanup-reference-store.php
-```
-
-The reference store is excluded from Git and from the package.
-
 ## Installation
 
 1. Upload `build/raai_multi_address.ocmod.zip` in Extensions > Installer.
