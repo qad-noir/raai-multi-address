@@ -96,6 +96,14 @@ class Catalog extends \Opencart\System\Engine\Controller {
 		}
 
 		$html = $this->load->view('extension/raai_multi_address/account/order_shipments', $view_data);
-		$output = str_replace('<h2>' . $data['text_history'] . '</h2>', $html . '<h2>' . $data['text_history'] . '</h2>', $output);
+		$history_heading = '<h2>' . $data['text_history'] . '</h2>';
+
+		if (str_contains($output, $history_heading)) {
+			$output = str_replace($history_heading, $html . $history_heading, $output);
+		} elseif (str_contains($output, '<div id="history">')) {
+			$output = str_replace('<div id="history">', $html . '<div id="history">', $output);
+		} else {
+			$output .= $html;
+		}
 	}
 }

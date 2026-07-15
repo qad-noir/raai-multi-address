@@ -1,64 +1,72 @@
-<h2>{{ text_multi_address_shipments }}</h2>
-{% for shipment in shipments %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <td colspan="2"><strong>{{ text_shipment }} {{ shipment.shipment_reference }}</strong></td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="width: 30%;"><strong>{{ text_destination }}</strong></td>
-          <td>
-            {{ shipment.address.firstname }} {{ shipment.address.lastname }}<br/>
-            {% if shipment.address.company %}{{ shipment.address.company }}<br/>{% endif %}
-            {{ shipment.address.address_1 }}<br/>
-            {% if shipment.address.address_2 %}{{ shipment.address.address_2 }}<br/>{% endif %}
-            {{ shipment.address.city }} {{ shipment.address.postcode }}<br/>
-            {{ shipment.address.zone }}<br/>
-            {{ shipment.address.country }}
-          </td>
-        </tr>
-        <tr>
-          <td><strong>{{ text_products }}</strong></td>
-          <td>
-            {% for product in shipment.products %}
-              {{ product.name }} x {{ product.quantity }}<br/>
-            {% endfor %}
-          </td>
-        </tr>
-        <tr>
-          <td><strong>{{ text_shipping_method }}</strong></td>
-          <td>{{ shipment.shipping_method_name }}</td>
-        </tr>
-        <tr>
-          <td><strong>{{ text_shipping_cost }}</strong></td>
-          <td>{{ shipment.shipping_cost_text }}</td>
-        </tr>
-        <tr>
-          <td><strong>{{ text_status }}</strong></td>
-          <td>{{ shipment.status_name }}</td>
-        </tr>
-        {% if shipment.tracking_number or shipment.tracking_url %}
-          <tr>
-            <td><strong>{{ text_tracking }}</strong></td>
-            <td>
-              {% if shipment.tracking_url %}
-                <a href="{{ shipment.tracking_url }}" target="_blank" rel="noopener">{% if shipment.tracking_number %}{{ shipment.tracking_number }}{% else %}{{ shipment.tracking_url }}{% endif %}</a>
-              {% else %}
-                {{ shipment.tracking_number }}
-              {% endif %}
-            </td>
-          </tr>
-        {% endif %}
-        {% if shipment.comment %}
-          <tr>
-            <td><strong>{{ text_delivery_instruction }}</strong></td>
-            <td>{{ shipment.comment }}</td>
-          </tr>
-        {% endif %}
-      </tbody>
-    </table>
+<div class="card mb-3">
+  <div class="card-header">
+    <button type="button" class="btn btn-link p-0 text-decoration-none fw-bold text-start text-body" data-bs-toggle="collapse" data-bs-target="#raai-order-shipments-panel" aria-expanded="true" aria-controls="raai-order-shipments-panel">{{ text_multi_address_shipments }}</button>
   </div>
-{% endfor %}
+  <div id="raai-order-shipments-panel" class="collapse show">
+    <div class="card-body">
+      {% for shipment in shipments %}
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td colspan="2"><strong>{{ text_shipment }} {{ shipment.shipment_reference }}</strong></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 30%;"><strong>{{ text_destination }}</strong></td>
+                <td>
+                  {{ shipment.address.firstname }} {{ shipment.address.lastname }}<br/>
+                  {% if shipment.address.company %}{{ shipment.address.company }}<br/>{% endif %}
+                  {{ shipment.address.address_1 }}<br/>
+                  {% if shipment.address.address_2 %}{{ shipment.address.address_2 }}<br/>{% endif %}
+                  {{ shipment.address.city }} {{ shipment.address.postcode }}<br/>
+                  {{ shipment.address.zone }}<br/>
+                  {{ shipment.address.country }}
+                </td>
+              </tr>
+              <tr>
+                <td><strong>{{ text_products }}</strong></td>
+                <td>
+                  {% for product in shipment.products %}
+                    {{ product.name }} x {{ product.quantity }}<br/>
+                  {% endfor %}
+                </td>
+              </tr>
+              <tr>
+                <td><strong>{{ text_shipping_method }}</strong></td>
+                <td>{{ shipment.shipping_method_name }}</td>
+              </tr>
+              <tr>
+                <td><strong>{{ text_shipping_cost }}</strong></td>
+                <td>{{ shipment.shipping_cost_text }}</td>
+              </tr>
+              <tr>
+                <td><strong>{{ text_status }}</strong></td>
+                <td>{{ shipment.status_name }}</td>
+              </tr>
+              {% if shipment.tracking_number or shipment.tracking_url %}
+                <tr>
+                  <td><strong>{{ text_tracking }}</strong></td>
+                  <td>
+                    {% if shipment.tracking_url %}
+                      <a href="{{ shipment.tracking_url }}" target="_blank" rel="noopener">{% if shipment.tracking_number %}{{ shipment.tracking_number }}{% else %}{{ shipment.tracking_url }}{% endif %}</a>
+                    {% else %}
+                      {{ shipment.tracking_number }}
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endif %}
+              {% if shipment.comment %}
+                <tr>
+                  <td><strong>{{ text_delivery_instruction }}</strong></td>
+                  <td>{{ shipment.comment }}</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

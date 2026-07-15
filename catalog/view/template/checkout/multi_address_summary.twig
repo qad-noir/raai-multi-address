@@ -1,38 +1,42 @@
 <div class="card mb-3">
-  <div class="card-header"><strong>{{ text_confirm_summary }}</strong></div>
-  <div class="card-body">
-    {% if errors %}
-      <div class="alert alert-danger">
-        <ul class="mb-0">
-          {% for error in errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
-    {% for group_key, group in groups %}
-      {% if group.products %}
-        <div class="border rounded p-3 mb-3">
-          <strong>{{ text_destination }} {{ loop.index }}</strong>
-          {% for address in addresses %}
-            {% if address.address_id == group.address_id %}
-              <div>{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}</div>
-            {% endif %}
-          {% endfor %}
-          <ul class="mb-0 mt-2">
-            {% for cart_key, quantity in group.products %}
-              {% set line = attribute(cart_lines, cart_key) %}
-              <li>{{ line.name }} x {{ quantity }}</li>
+  <div class="card-header">
+    <button type="button" class="btn btn-link p-0 text-decoration-none fw-bold text-start text-body" data-bs-toggle="collapse" data-bs-target="#raai-multi-address-summary-panel" aria-expanded="true" aria-controls="raai-multi-address-summary-panel">{{ text_confirm_summary }}</button>
+  </div>
+  <div id="raai-multi-address-summary-panel" class="collapse show">
+    <div class="card-body">
+      {% if errors %}
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            {% for error in errors %}
+              <li>{{ error }}</li>
             {% endfor %}
           </ul>
-          {% if group.delivery_instruction %}
-            <div class="mt-2"><strong>{{ text_delivery_instruction }}:</strong> {{ group.delivery_instruction }}</div>
-          {% endif %}
         </div>
       {% endif %}
-    {% endfor %}
-    {% if shipping.combined_cost_text is defined %}
-      <div><strong>{{ text_combined_shipping }}:</strong> {{ shipping.combined_cost_text }}</div>
-    {% endif %}
+      {% for group_key, group in groups %}
+        {% if group.products %}
+          <div class="border rounded p-3 mb-3">
+            <strong>{{ text_destination }} {{ loop.index }}</strong>
+            {% for address in addresses %}
+              {% if address.address_id == group.address_id %}
+                <div>{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}</div>
+              {% endif %}
+            {% endfor %}
+            <ul class="mb-0 mt-2">
+              {% for cart_key, quantity in group.products %}
+                {% set line = attribute(cart_lines, cart_key) %}
+                <li>{{ line.name }} x {{ quantity }}</li>
+              {% endfor %}
+            </ul>
+            {% if group.delivery_instruction %}
+              <div class="mt-2"><strong>{{ text_delivery_instruction }}:</strong> {{ group.delivery_instruction }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+      {% if shipping.combined_cost_text is defined %}
+        <div><strong>{{ text_combined_shipping }}:</strong> {{ shipping.combined_cost_text }}</div>
+      {% endif %}
+    </div>
   </div>
 </div>
