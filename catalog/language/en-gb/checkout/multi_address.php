@@ -1,0 +1,19 @@
+<?php
+$_['heading_title'] = 'Multi-address shipping';
+$_['text_single_address'] = 'Ship everything to one address';
+$_['text_multi_address'] = 'Ship products to multiple addresses';
+$_['text_destination'] = 'Destination';
+$_['text_select_address'] = 'Select address';
+$_['text_products'] = 'Products';
+$_['text_quantity'] = 'Quantity';
+$_['text_delivery_instruction'] = 'Delivery instructions';
+$_['text_add_destination'] = 'Add destination';
+$_['text_remove_destination'] = 'Remove destination';
+$_['text_save_allocation'] = 'Save destinations';
+$_['text_saved'] = 'Multi-address shipping allocation saved.';
+$_['text_confirm_summary'] = 'Shipment destinations';
+$_['text_combined_shipping'] = 'Combined multi-address shipping';
+$_['text_errors'] = 'Please fix the multi-address allocation before payment.';
+$_['entry_quantity_for'] = 'Quantity for %s';
+$_['error_logged_in'] = 'Multi-address shipping is available only to registered customers.';
+$_['error_shipping_required'] = 'The cart does not contain shippable products.';

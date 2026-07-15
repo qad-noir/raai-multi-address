@@ -1,0 +1,10 @@
+/oc_store_project/
+/build/*.ocmod.zip
+/vendor/
+/node_modules/
+.env
+*.log
+.DS_Store
+Thumbs.db
+/.agents
+/.history/

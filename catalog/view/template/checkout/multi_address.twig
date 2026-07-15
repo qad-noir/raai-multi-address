@@ -1,0 +1,168 @@
+<div id="raai-multi-address" class="card mb-3">
+  <div class="card-header"><strong>{{ heading_title }}</strong></div>
+  <div class="card-body">
+    {% if errors %}
+      <div class="alert alert-danger">
+        <strong>{{ text_errors }}</strong>
+        <ul class="mb-0">
+          {% for error in errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <form id="form-raai-multi-address">
+      <div class="mb-3">
+        <div class="form-check">
+          <input type="radio" name="multi_address_enabled" value="0" id="input-raai-single-address" class="form-check-input"{% if not enabled %} checked{% endif %}/>
+          <label for="input-raai-single-address" class="form-check-label">{{ text_single_address }}</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" name="multi_address_enabled" value="1" id="input-raai-multi-address" class="form-check-input"{% if enabled %} checked{% endif %}/>
+          <label for="input-raai-multi-address" class="form-check-label">{{ text_multi_address }}</label>
+        </div>
+      </div>
+      <div id="raai-multi-address-groups"{% if not enabled %} class="d-none"{% endif %}>
+        {% for group_key, group in groups %}
+          <div class="border rounded p-3 mb-3 raai-multi-address-group" data-group-key="{{ group_key }}">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <strong>{{ text_destination }}</strong>
+              <button type="button" class="btn btn-outline-danger btn-sm raai-remove-destination">{{ text_remove_destination }}</button>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="input-raai-address-{{ group_key }}">{{ text_select_address }}</label>
+              <select name="group[{{ group_key }}][address_id]" id="input-raai-address-{{ group_key }}" class="form-select">
+                {% for address in addresses %}
+                  <option value="{{ address.address_id }}"{% if address.address_id == group.address_id %} selected{% endif %}>{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-sm align-middle">
+                <thead>
+                  <tr>
+                    <th>{{ text_products }}</th>
+                    <th class="text-end" style="width: 120px;">{{ text_quantity }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for cart_key, line in cart_lines %}
+                    {% if line.shipping %}
+                      <tr>
+                        <td>
+                          {{ line.name }}
+                          {% for option in line.option %}
+                            <br/><small>{{ option.name }}: {{ option.value }}</small>
+                          {% endfor %}
+                          <br/><small>{{ text_quantity }}: {{ line.quantity }}</small>
+                        </td>
+                        <td>
+                          <input type="number" min="0" max="{{ line.quantity }}" step="1" name="group[{{ group_key }}][products][{{ cart_key }}]" value="{{ attribute(group.products, cart_key)|default(0) }}" aria-label="{{ entry_quantity_for|format(line.name) }}" class="form-control text-end"/>
+                        </td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% if show_delivery_instructions %}
+              <div class="mb-0">
+                <label class="form-label" for="input-raai-instruction-{{ group_key }}">{{ text_delivery_instruction }}</label>
+                <textarea name="group[{{ group_key }}][delivery_instruction]" id="input-raai-instruction-{{ group_key }}" rows="2" class="form-control">{{ group.delivery_instruction }}</textarea>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <div class="d-flex gap-2 justify-content-end">
+          <button type="button" id="button-raai-add-destination" class="btn btn-outline-secondary">{{ text_add_destination }}</button>
+          <button type="submit" id="button-raai-save-allocation" class="btn btn-primary">{{ text_save_allocation }}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript"><!--
+(function() {
+  const wrapper = document.getElementById('raai-multi-address');
+  if (!wrapper) {
+    return;
+  }
+
+  const groups = document.getElementById('raai-multi-address-groups');
+  const form = document.getElementById('form-raai-multi-address');
+
+  function refreshVisibility() {
+    groups.classList.toggle('d-none', !document.getElementById('input-raai-multi-address').checked);
+  }
+
+  function renameGroup(group, key) {
+    group.dataset.groupKey = key;
+    group.querySelectorAll('[name]').forEach(function(input) {
+      input.name = input.name.replace(/group\[[^\]]+\]/, 'group[' + key + ']');
+    });
+    group.querySelectorAll('[id]').forEach(function(input) {
+      input.id = input.id.replace(/-[a-zA-Z0-9_]+$/, '-' + key);
+    });
+    group.querySelectorAll('label[for]').forEach(function(label) {
+      label.htmlFor = label.htmlFor.replace(/-[a-zA-Z0-9_]+$/, '-' + key);
+    });
+  }
+
+  wrapper.querySelectorAll('input[name="multi_address_enabled"]').forEach(function(input) {
+    input.addEventListener('change', refreshVisibility);
+  });
+
+  document.getElementById('button-raai-add-destination').addEventListener('click', function() {
+    const source = groups.querySelector('.raai-multi-address-group');
+    if (!source) {
+      return;
+    }
+
+    const clone = source.cloneNode(true);
+    const key = 'mas_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    renameGroup(clone, key);
+    clone.querySelectorAll('input[type="number"]').forEach(function(input) { input.value = 0; });
+    clone.querySelectorAll('textarea').forEach(function(input) { input.value = ''; });
+    groups.insertBefore(clone, groups.lastElementChild);
+  });
+
+  groups.addEventListener('click', function(event) {
+    if (!event.target.classList.contains('raai-remove-destination')) {
+      return;
+    }
+
+    const allGroups = groups.querySelectorAll('.raai-multi-address-group');
+    if (allGroups.length > 1) {
+      event.target.closest('.raai-multi-address-group').remove();
+    }
+  });
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    fetch('{{ save }}', {
+      method: 'POST',
+      body: new URLSearchParams(new FormData(form)),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      wrapper.querySelectorAll('.alert').forEach(function(node) { node.remove(); });
+      if (json.error) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-danger';
+        alert.innerHTML = '<ul class="mb-0">' + json.error.map(function(error) { return '<li>' + error + '</li>'; }).join('') + '</ul>';
+        wrapper.querySelector('.card-body').prepend(alert);
+      }
+      if (json.success) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success';
+        alert.textContent = json.success;
+        wrapper.querySelector('.card-body').prepend(alert);
+        $('#checkout-confirm').load('index.php?route=checkout/confirm.confirm&language={{ language }}');
+      }
+    });
+  });
+
+  refreshVisibility();
+})();
+//--></script>

@@ -1,0 +1,35 @@
+name: PHP checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  php-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: zip
+
+      - name: Ensure reference store is absent
+        run: |
+          test ! -d oc_store_project
+          test -z "$(git ls-files oc_store_project)"
+
+      - name: Ensure no env files are tracked
+        run: |
+          test -z "$(git ls-files '*.env' '.env')"
+
+      - name: PHP syntax, tests, and package build
+        run: php scripts/build-extension.php
+
+      - name: Inspect package exclusions
+        run: |
+          unzip -l build/raai_multi_address.ocmod.zip
+          ! unzip -l build/raai_multi_address.ocmod.zip | grep -E 'oc_store_project|\.git|\.env|tests/|docs/|scripts/'

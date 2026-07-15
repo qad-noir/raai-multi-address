@@ -1,0 +1,26 @@
+<?php
+$_['tab_shipments'] = 'Multi-Address Shipments';
+$_['text_not_multi_address'] = 'This order does not have multi-address shipment records.';
+$_['text_multi_address_yes'] = 'Multi-address order: Yes';
+$_['text_destination_count'] = 'Destinations';
+$_['text_delivered_count'] = 'Delivered';
+$_['text_combined_shipping'] = 'Combined multi-address shipping';
+$_['text_shipment'] = 'Shipment';
+$_['text_destination'] = 'Destination';
+$_['text_products'] = 'Products';
+$_['text_shipping'] = 'Shipping';
+$_['text_status'] = 'Status';
+$_['text_tracking'] = 'Tracking';
+$_['text_history'] = 'History';
+$_['text_update_success'] = 'Shipment updated.';
+$_['text_packing_slip'] = 'Packing slip';
+$_['entry_status'] = 'Status';
+$_['entry_tracking_number'] = 'Tracking number';
+$_['entry_tracking_url'] = 'Tracking URL';
+$_['entry_comment'] = 'Comment';
+$_['entry_history_comment'] = 'History comment';
+$_['entry_notify'] = 'Notify customer';
+$_['button_update'] = 'Update shipment';
+$_['button_print'] = 'Print';
+$_['error_permission'] = 'Warning: You do not have permission to modify multi-address shipments!';
+$_['error_shipment'] = 'Shipment record could not be found.';

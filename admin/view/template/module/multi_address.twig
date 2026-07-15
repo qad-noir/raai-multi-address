@@ -1,0 +1,210 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="float-end">
+        <button type="submit" form="form-module" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-save"></i></button>
+        <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ol class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-pencil"></i> {{ text_edit }}</div>
+      <div class="card-body">
+        <form id="form-module" action="{{ save }}" method="post" data-oc-toggle="ajax">
+          <ul class="nav nav-tabs">
+            <li class="nav-item"><a href="#tab-general" data-bs-toggle="tab" class="nav-link active">{{ text_general }}</a></li>
+            <li class="nav-item"><a href="#tab-shipping" data-bs-toggle="tab" class="nav-link">{{ text_shipping }}</a></li>
+            <li class="nav-item"><a href="#tab-display" data-bs-toggle="tab" class="nav-link">{{ text_display }}</a></li>
+            <li class="nav-item"><a href="#tab-order" data-bs-toggle="tab" class="nav-link">{{ text_order_management }}</a></li>
+            <li class="nav-item"><a href="#tab-data" data-bs-toggle="tab" class="nav-link">{{ text_data }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div id="tab-general" class="tab-pane active">
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_status }}</label>
+                <div class="col-sm-9">
+                  <div class="form-check form-switch form-switch-lg">
+                    <input type="hidden" name="module_raai_multi_address_status" value="0"/>
+                    <input type="checkbox" name="module_raai_multi_address_status" value="1" class="form-check-input"{% if module_raai_multi_address_status %} checked{% endif %}/>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_registered_only }}</label>
+                <div class="col-sm-9"><input type="text" value="{{ text_yes }}" class="form-control" disabled/><div class="form-text">{{ help_fixed_v1 }}</div></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_order_creation_mode }}</label>
+                <div class="col-sm-9"><input type="text" value="{{ order_creation_mode }}" class="form-control" disabled/><div class="form-text">{{ help_fixed_v1 }}</div></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_max_addresses_per_order }}</label>
+                <div class="col-sm-9"><input type="number" min="1" name="module_raai_multi_address_max_addresses_per_order" value="{{ module_raai_multi_address_max_addresses_per_order }}" class="form-control"/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_max_addresses_per_product }}</label>
+                <div class="col-sm-9"><input type="number" min="1" name="module_raai_multi_address_max_addresses_per_product" value="{{ module_raai_multi_address_max_addresses_per_product }}" class="form-control"/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_allow_quantity_splitting }}</label>
+                <div class="col-sm-9"><input type="hidden" name="module_raai_multi_address_allow_quantity_splitting" value="0"/><input type="checkbox" name="module_raai_multi_address_allow_quantity_splitting" value="1" class="form-check-input"{% if module_raai_multi_address_allow_quantity_splitting %} checked{% endif %}/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_allow_checkout_address_create }}</label>
+                <div class="col-sm-9"><input type="hidden" name="module_raai_multi_address_allow_checkout_address_create" value="0"/><input type="checkbox" name="module_raai_multi_address_allow_checkout_address_create" value="1" class="form-check-input"{% if module_raai_multi_address_allow_checkout_address_create %} checked{% endif %}/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_save_checkout_addresses }}</label>
+                <div class="col-sm-9"><input type="hidden" name="module_raai_multi_address_save_checkout_addresses" value="0"/><input type="checkbox" name="module_raai_multi_address_save_checkout_addresses" value="1" class="form-check-input"{% if module_raai_multi_address_save_checkout_addresses %} checked{% endif %}/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_default_checkout_mode }}</label>
+                <div class="col-sm-9">
+                  <select name="module_raai_multi_address_default_checkout_mode" class="form-select">
+                    {% for key, label in checkout_modes %}
+                      <option value="{{ key }}"{% if key == module_raai_multi_address_default_checkout_mode %} selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div id="tab-shipping" class="tab-pane">
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_pricing_mode }}</label>
+                <div class="col-sm-9">
+                  <select name="module_raai_multi_address_pricing_mode" class="form-select">
+                    {% for key, label in pricing_modes %}
+                      <option value="{{ key }}"{% if key == module_raai_multi_address_pricing_mode %} selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_fixed_fee_per_address }}</label>
+                <div class="col-sm-9"><input type="text" name="module_raai_multi_address_fixed_fee_per_address" value="{{ module_raai_multi_address_fixed_fee_per_address }}" class="form-control"/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_additional_address_surcharge }}</label>
+                <div class="col-sm-9"><input type="text" name="module_raai_multi_address_additional_address_surcharge" value="{{ module_raai_multi_address_additional_address_surcharge }}" class="form-control"/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_separate_shipping_method }}</label>
+                <div class="col-sm-9"><input type="hidden" name="module_raai_multi_address_separate_shipping_method" value="0"/><input type="checkbox" name="module_raai_multi_address_separate_shipping_method" value="1" class="form-check-input"{% if module_raai_multi_address_separate_shipping_method %} checked{% endif %}/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_allowed_shipping_methods }}</label>
+                <div class="col-sm-9"><input type="text" name="module_raai_multi_address_allowed_shipping_methods" value="{{ module_raai_multi_address_allowed_shipping_methods }}" class="form-control"/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_default_shipping_method }}</label>
+                <div class="col-sm-9"><input type="text" name="module_raai_multi_address_default_shipping_method" value="{{ module_raai_multi_address_default_shipping_method }}" class="form-control"/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_requote_on_change }}</label>
+                <div class="col-sm-9"><input type="hidden" name="module_raai_multi_address_requote_on_change" value="0"/><input type="checkbox" name="module_raai_multi_address_requote_on_change" value="1" class="form-check-input"{% if module_raai_multi_address_requote_on_change %} checked{% endif %}/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_free_shipping_behaviour }}</label>
+                <div class="col-sm-9">
+                  <select name="module_raai_multi_address_free_shipping_behaviour" class="form-select">
+                    {% for key, label in free_shipping_behaviours %}
+                      <option value="{{ key }}"{% if key == module_raai_multi_address_free_shipping_behaviour %} selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div id="tab-display" class="tab-pane">
+              {% set display_flags = {
+                'module_raai_multi_address_show_product_images': entry_show_product_images,
+                'module_raai_multi_address_show_shipment_weight': entry_show_shipment_weight,
+                'module_raai_multi_address_show_shipping_cost_per_address': entry_show_shipping_cost_per_address,
+                'module_raai_multi_address_show_delivery_instructions': entry_show_delivery_instructions,
+                'module_raai_multi_address_include_email_destinations': entry_include_email_destinations,
+                'module_raai_multi_address_display_invoice_destinations': entry_display_invoice_destinations
+              } %}
+              {% for key, label in display_flags %}
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">{{ label }}</label>
+                  <div class="col-sm-9"><input type="hidden" name="{{ key }}" value="0"/><input type="checkbox" name="{{ key }}" value="1" class="form-check-input"{% if attribute(_context, key) %} checked{% endif %}/></div>
+                </div>
+              {% endfor %}
+            </div>
+            <div id="tab-order" class="tab-pane">
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_reference_format }}</label>
+                <div class="col-sm-9"><input type="text" name="module_raai_multi_address_reference_format" value="{{ module_raai_multi_address_reference_format }}" class="form-control"/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_initial_status }}</label>
+                <div class="col-sm-9">
+                  <select name="module_raai_multi_address_initial_status_id" class="form-select">
+                    <option value="1"{% if module_raai_multi_address_initial_status_id == 1 %} selected{% endif %}>Pending</option>
+                    <option value="2"{% if module_raai_multi_address_initial_status_id == 2 %} selected{% endif %}>Processing</option>
+                    <option value="3"{% if module_raai_multi_address_initial_status_id == 3 %} selected{% endif %}>Dispatched</option>
+                    <option value="4"{% if module_raai_multi_address_initial_status_id == 4 %} selected{% endif %}>Delivered</option>
+                  </select>
+                </div>
+              </div>
+              {% set order_flags = {
+                'module_raai_multi_address_sync_order_status': entry_sync_order_status,
+                'module_raai_multi_address_complete_when_delivered': entry_complete_when_delivered,
+                'module_raai_multi_address_allow_admin_destination_edit': entry_allow_admin_destination_edit,
+                'module_raai_multi_address_allow_admin_product_reassign': entry_allow_admin_product_reassign
+              } %}
+              {% for key, label in order_flags %}
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">{{ label }}</label>
+                  <div class="col-sm-9"><input type="hidden" name="{{ key }}" value="0"/><input type="checkbox" name="{{ key }}" value="1" class="form-check-input"{% if attribute(_context, key) %} checked{% endif %}/></div>
+                </div>
+              {% endfor %}
+            </div>
+            <div id="tab-data" class="tab-pane">
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_preserve_data }}</label>
+                <div class="col-sm-9"><input type="hidden" name="module_raai_multi_address_preserve_data" value="0"/><input type="checkbox" name="module_raai_multi_address_preserve_data" value="1" class="form-check-input"{% if module_raai_multi_address_preserve_data %} checked{% endif %}/></div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ entry_audit_retention_days }}</label>
+                <div class="col-sm-9"><input type="number" min="1" name="module_raai_multi_address_audit_retention_days" value="{{ module_raai_multi_address_audit_retention_days }}" class="form-control"/></div>
+              </div>
+              <button type="button" id="button-raai-purge" class="btn btn-danger">{{ button_purge }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#button-raai-purge').on('click', function() {
+  $.ajax({
+    url: '{{ purge }}',
+    dataType: 'json',
+    beforeSend: function() {
+      $('#button-raai-purge').button('loading');
+    },
+    complete: function() {
+      $('#button-raai-purge').button('reset');
+    },
+    success: function(json) {
+      $('.alert-dismissible').remove();
+      if (json.error) {
+        $('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json.error + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+      }
+      if (json.success) {
+        $('#content > .container-fluid').prepend('<div class="alert alert-success alert-dismissible"><i class="fa-solid fa-circle-check"></i> ' + json.success + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+      }
+    }
+  });
+});
+//--></script>
+{{ footer }}

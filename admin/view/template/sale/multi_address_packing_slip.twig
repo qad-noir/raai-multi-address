@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ code }}">
+<head>
+  <meta charset="UTF-8"/>
+  <title>{{ text_packing_slip }} {{ shipment.shipment_reference }}</title>
+  <link href="view/stylesheet/bootstrap.css" rel="stylesheet"/>
+</head>
+<body>
+  <div class="container mt-4">
+    <h1>{{ text_packing_slip }} {{ shipment.shipment_reference }}</h1>
+    <table class="table table-bordered">
+      <tr>
+        <td style="width: 35%;"><strong>{{ text_destination }}</strong></td>
+        <td>
+          {{ shipment.address.firstname }} {{ shipment.address.lastname }}<br/>
+          {% if shipment.address.company %}{{ shipment.address.company }}<br/>{% endif %}
+          {{ shipment.address.address_1 }}<br/>
+          {% if shipment.address.address_2 %}{{ shipment.address.address_2 }}<br/>{% endif %}
+          {{ shipment.address.city }} {{ shipment.address.postcode }}<br/>
+          {{ shipment.address.zone }}<br/>
+          {{ shipment.address.country }}
+        </td>
+      </tr>
+      <tr>
+        <td><strong>{{ text_shipping }}</strong></td>
+        <td>{{ shipment.shipping_method_name }}</td>
+      </tr>
+    </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>{{ text_products }}</th>
+          <th class="text-end">{{ text_status }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in shipment.products %}
+          <tr>
+            <td>{{ product.name }} ({{ product.model }})</td>
+            <td class="text-end">x {{ product.quantity }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script>window.print();</script>
+</body>
+</html>

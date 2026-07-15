@@ -1,0 +1,132 @@
+<div id="raai-multi-address-order">
+  <div class="row row-cols-1 row-cols-md-3 mb-3">
+    <div class="col">
+      <div class="form-control border rounded mb-2"><strong>{{ text_multi_address_yes }}</strong></div>
+    </div>
+    <div class="col">
+      <div class="form-control border rounded mb-2"><strong>{{ text_destination_count }}:</strong> {{ summary.shipment_count }}</div>
+    </div>
+    <div class="col">
+      <div class="form-control border rounded mb-2"><strong>{{ text_combined_shipping }}:</strong> {{ shipping_total }}</div>
+    </div>
+  </div>
+  {% for shipment in shipments %}
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <strong>{{ text_shipment }} {{ shipment.shipment_reference }}</strong>
+        <a href="{{ packing_slip }}&shipment_id={{ shipment.shipment_id }}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-print"></i> {{ button_print }}</a>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <h5>{{ text_destination }}</h5>
+            <address>
+              {{ shipment.address.firstname }} {{ shipment.address.lastname }}<br/>
+              {% if shipment.address.company %}{{ shipment.address.company }}<br/>{% endif %}
+              {{ shipment.address.address_1 }}<br/>
+              {% if shipment.address.address_2 %}{{ shipment.address.address_2 }}<br/>{% endif %}
+              {{ shipment.address.city }} {{ shipment.address.postcode }}<br/>
+              {{ shipment.address.zone }}<br/>
+              {{ shipment.address.country }}<br/>
+              {% if shipment.address.telephone %}{{ shipment.address.telephone }}{% endif %}
+            </address>
+          </div>
+          <div class="col-md-8">
+            <h5>{{ text_products }}</h5>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>{{ text_products }}</th>
+                    <th class="text-end">{{ text_shipping }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for product in shipment.products %}
+                    <tr>
+                      <td>{{ product.name }} ({{ product.model }}) x {{ product.quantity }}</td>
+                      <td class="text-end">{{ shipment.shipping_cost_text }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <form class="raai-shipment-form" method="post">
+          <input type="hidden" name="shipment_id" value="{{ shipment.shipment_id }}"/>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="shipment_status_id" class="form-select">
+                {% for status in shipment_statuses %}
+                  <option value="{{ status.shipment_status_id }}"{% if status.shipment_status_id == shipment.shipment_status_id %} selected{% endif %}>{{ status.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_tracking_number }}</label>
+            <div class="col-sm-10"><input type="text" name="tracking_number" value="{{ shipment.tracking_number }}" class="form-control"/></div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_tracking_url }}</label>
+            <div class="col-sm-10"><input type="url" name="tracking_url" value="{{ shipment.tracking_url }}" class="form-control"/></div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_comment }}</label>
+            <div class="col-sm-10"><textarea name="comment" rows="2" class="form-control">{{ shipment.comment }}</textarea></div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_history_comment }}</label>
+            <div class="col-sm-10"><textarea name="history_comment" rows="2" class="form-control"></textarea></div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+            <div class="col-sm-10"><input type="hidden" name="notify" value="0"/><input type="checkbox" name="notify" value="1" class="form-check-input"/></div>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> {{ button_update }}</button>
+          </div>
+        </form>
+        {% if shipment.histories %}
+          <h5 class="mt-3">{{ text_history }}</h5>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <tbody>
+                {% for history in shipment.histories %}
+                  <tr>
+                    <td>{{ history.date_added }}</td>
+                    <td>{{ history.status_name }}</td>
+                    <td>{{ history.comment }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<script type="text/javascript"><!--
+$('.raai-shipment-form').on('submit', function(e) {
+  e.preventDefault();
+  var form = this;
+  $.ajax({
+    url: '{{ update }}',
+    type: 'post',
+    dataType: 'json',
+    data: $(form).serialize(),
+    success: function(json) {
+      $('.alert-dismissible').remove();
+      if (json.error) {
+        $('#raai-multi-address-order').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json.error + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+      }
+      if (json.success) {
+        $('#raai-multi-address-order').prepend('<div class="alert alert-success alert-dismissible"><i class="fa-solid fa-circle-check"></i> ' + json.success + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+      }
+    }
+  });
+});
+//--></script>
