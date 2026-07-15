@@ -9,13 +9,13 @@
           <table class="table table-bordered table-hover">
             <thead>
               <tr>
-                <td colspan="2"><strong>{{ text_shipment }} {{ shipment.shipment_reference }}</strong></td>
+                <td colspan="3"><strong>{{ text_shipment }} {{ shipment.shipment_reference }}</strong></td>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td style="width: 30%;"><strong>{{ text_destination }}</strong></td>
-                <td>
+                <td colspan="2">
                   {{ shipment.address.firstname }} {{ shipment.address.lastname }}<br/>
                   {% if shipment.address.company %}{{ shipment.address.company }}<br/>{% endif %}
                   {{ shipment.address.address_1 }}<br/>
@@ -25,30 +25,35 @@
                   {{ shipment.address.country }}
                 </td>
               </tr>
-              <tr>
-                <td><strong>{{ text_products }}</strong></td>
-                <td>
-                  {% for product in shipment.products %}
-                    {{ product.name }} x {{ product.quantity }}<br/>
-                  {% endfor %}
-                </td>
-              </tr>
+              {% if shipment.products %}
+                <tr>
+                  <td rowspan="{{ shipment.products|length + 1 }}"><strong>{{ text_products }}</strong></td>
+                  <td><strong>{{ text_products }}</strong></td>
+                  <td class="text-end" style="width: 120px;"><strong>{{ text_quantity }}</strong></td>
+                </tr>
+              {% endif %}
+              {% for product in shipment.products %}
+                <tr>
+                  <td>{{ product.name }} x {{ product.quantity }}</td>
+                  <td class="text-end" style="width: 120px;">{{ product.quantity }}</td>
+                </tr>
+              {% endfor %}
               <tr>
                 <td><strong>{{ text_shipping_method }}</strong></td>
-                <td>{{ shipment.shipping_method_name }}</td>
+                <td colspan="2">{{ shipment.shipping_method_name }}</td>
               </tr>
               <tr>
                 <td><strong>{{ text_shipping_cost }}</strong></td>
-                <td>{{ shipment.shipping_cost_text }}</td>
+                <td colspan="2">{{ shipment.shipping_cost_text }}</td>
               </tr>
               <tr>
                 <td><strong>{{ text_status }}</strong></td>
-                <td>{{ shipment.status_name }}</td>
+                <td colspan="2">{{ shipment.status_name }}</td>
               </tr>
               {% if shipment.tracking_number or shipment.tracking_url %}
                 <tr>
                   <td><strong>{{ text_tracking }}</strong></td>
-                  <td>
+                  <td colspan="2">
                     {% if shipment.tracking_url %}
                       <a href="{{ shipment.tracking_url }}" target="_blank" rel="noopener">{% if shipment.tracking_number %}{{ shipment.tracking_number }}{% else %}{{ shipment.tracking_url }}{% endif %}</a>
                     {% else %}
@@ -60,7 +65,7 @@
               {% if shipment.comment %}
                 <tr>
                   <td><strong>{{ text_delivery_instruction }}</strong></td>
-                  <td>{{ shipment.comment }}</td>
+                  <td colspan="2">{{ shipment.comment }}</td>
                 </tr>
               {% endif %}
             </tbody>

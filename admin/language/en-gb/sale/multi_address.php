@@ -2,12 +2,14 @@
 $_['tab_shipments'] = 'Multi-Address Shipments';
 $_['text_not_multi_address'] = 'This order does not have multi-address shipment records.';
 $_['text_multi_address_yes'] = 'Multi-address order: Yes';
+$_['text_multi_address_shipments'] = 'Shipment destinations';
 $_['text_destination_count'] = 'Destinations';
 $_['text_delivered_count'] = 'Delivered';
 $_['text_combined_shipping'] = 'Combined multi-address shipping';
 $_['text_shipment'] = 'Shipment';
 $_['text_destination'] = 'Destination';
 $_['text_products'] = 'Products';
+$_['text_quantity'] = 'Quantity';
 $_['text_shipping'] = 'Shipping';
 $_['text_status'] = 'Status';
 $_['text_tracking'] = 'Tracking';
