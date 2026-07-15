@@ -264,6 +264,14 @@ class MultiAddress extends \Opencart\System\Engine\Controller {
 				'action' => 'extension/raai_multi_address/event/admin.orderInfoAfter',
 				'status' => 1,
 				'sort_order' => 10
+			],
+			[
+				'code' => 'raai_multi_address_admin_shipping_print',
+				'description' => 'Multi-Address Shipping admin dispatch note destinations',
+				'trigger' => 'admin/view/sale/order_shipping/after',
+				'action' => 'extension/raai_multi_address/event/admin.orderShippingAfter',
+				'status' => 1,
+				'sort_order' => 10
 			]
 		];
 	}

@@ -1,0 +1,50 @@
+<div id="raai-multi-address-shipping-{{ order_id }}" class="mb-3">
+  <h2 class="h4">{{ text_multi_address_shipments }}</h2>
+  {% for shipment in shipments %}
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <td colspan="3"><strong>{{ text_shipment }} {{ shipment.shipment_reference }}</strong></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width: 25%;"><strong>{{ text_destination }}</strong></td>
+          <td colspan="2">
+            {{ shipment.address.firstname }} {{ shipment.address.lastname }}<br/>
+            {% if shipment.address.company %}{{ shipment.address.company }}<br/>{% endif %}
+            {{ shipment.address.address_1 }}<br/>
+            {% if shipment.address.address_2 %}{{ shipment.address.address_2 }}<br/>{% endif %}
+            {{ shipment.address.city }} {{ shipment.address.postcode }}<br/>
+            {{ shipment.address.zone }}<br/>
+            {{ shipment.address.country }}
+            {% if shipment.address.telephone %}<br/>{{ shipment.address.telephone }}{% endif %}
+          </td>
+        </tr>
+        {% if shipment.products %}
+          <tr>
+            <td rowspan="{{ shipment.products|length + 1 }}"><strong>{{ text_products }}</strong></td>
+            <td><strong>{{ text_products }}</strong></td>
+            <td class="text-end" style="width: 120px;"><strong>{{ text_quantity }}</strong></td>
+          </tr>
+        {% endif %}
+        {% for product in shipment.products %}
+          <tr>
+            <td>{{ product.name }} ({{ product.model }}) x {{ product.quantity }}</td>
+            <td class="text-end">{{ product.quantity }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td><strong>{{ text_shipping_method }}</strong></td>
+          <td colspan="2">{{ shipment.shipping_method_name }}</td>
+        </tr>
+        {% if shipment.address.delivery_instruction %}
+          <tr>
+            <td><strong>{{ text_delivery_instruction }}</strong></td>
+            <td colspan="2">{{ shipment.address.delivery_instruction }}</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  {% endfor %}
+</div>
